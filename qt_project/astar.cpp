@@ -2,7 +2,7 @@
 
 Astar::Astar(double HW, bool BT)
 {
-    hweight = 123;//HW;
+    hweight = HW;
     breakingties = BT;
 
     std::cout << "    astart init\n";
@@ -10,8 +10,14 @@ Astar::Astar(double HW, bool BT)
 
 double Astar::computeHFromCellToCell(int i1, int j1, int i2, int j2, const EnvironmentOptions &options)
 {
-    //need to implement
-    std::cout << "qs;ljdhgpaiwjhegl;akjhwg;kjhalsdkjf\n\n\n\n\n\n\n";
-    std::cout << i1 << "  " << j1 << std::endl;
-    return 0;
+    int i_dist, j_dist;
+    double metric_dist = 0;
+
+    if (options.metrictype == CN_SP_MT_EUCL || options.metrictype == CN_SP_MT_DIAG) {
+        i_dist = i1 - i2;
+        j_dist = j1 - j2;
+        metric_dist = std::sqrt(i_dist * i_dist + j_dist * j_dist);
+    }
+
+    return hweight*metric_dist;
 }

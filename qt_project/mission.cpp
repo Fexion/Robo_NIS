@@ -58,10 +58,12 @@ void Mission::createEnvironmentOptions()
 void Mission::createSearch()
 {
     std::cout << "     cteate_search\n";
+    //config.SearchParams[CN_SP_ST] = 1;
     if (search)
         delete search;
 //    if (config.SearchParams[CN_SP_ST] == CN_SP_ST_BFS)
 //        search = new BFS();
+
     else if (config.SearchParams[CN_SP_ST] == CN_SP_ST_DIJK)
         search = new Dijkstra();
     else if (config.SearchParams[CN_SP_ST] == CN_SP_ST_ASTAR)

@@ -5,9 +5,12 @@
 #include "environmentoptions.h"
 #include <list>
 #include <vector>
+#include <queue>
 #include <math.h>
 #include <limits>
 #include <chrono>
+
+#include <algorithm>
 
 class ISearch
 {
@@ -17,6 +20,8 @@ class ISearch
         SearchResult startSearch(ILogger *Logger, const Map &Map, const EnvironmentOptions &options);
 
     protected:
+        virtual double computeHFromCellToCell(int i1, int j1, int i2, int j2, const EnvironmentOptions &options){return 0;}
+
         //CODE HERE
         //Try to split class functionality to the methods that can be re-used in successors classes,
         //e.g. classes that realize A*, JPS, Theta* algorithms
@@ -49,6 +54,9 @@ class ISearch
         std::list<Node>                 lppath, hppath;
         double                          hweight;//weight of h-value
         bool                            breakingties;//flag that sets the priority of nodes in addOpen function when their F-values is equal
+        std::vector<Node>               close;
+        std::priority_queue<Node>       open[2];
+        char                            pqi = 0;
         //need to define open, close;
 };
 #endif
