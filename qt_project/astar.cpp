@@ -2,10 +2,10 @@
 
 Astar::Astar(double HW, bool BT)
 {
-    hweight = HW;
+    hweight = 123;//HW;
     breakingties = BT;
 
-    std::cout << "qweqwcrfsdfaefqwefaeweatreqwe\n\n\n\n\n";
+    std::cout << "    astart init\n";
 }
 
 double Astar::computeHFromCellToCell(int i1, int j1, int i2, int j2, const EnvironmentOptions &options)

@@ -4,6 +4,7 @@ ISearch::ISearch()
 {
     hweight = 1;
     breakingties = CN_SP_BT_GMAX;
+    std::cout << "    isearch init\n";
 }
 
 ISearch::~ISearch(void) {}
@@ -11,6 +12,8 @@ ISearch::~ISearch(void) {}
 
 SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
 {
+    std::cout << "     startsearch in func\n";
+    std::cour << hweight;
     //need to implement
 
     /*sresult.pathfound = ;

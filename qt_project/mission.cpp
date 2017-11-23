@@ -57,6 +57,7 @@ void Mission::createEnvironmentOptions()
 
 void Mission::createSearch()
 {
+    std::cout << "     cteate_search\n";
     if (search)
         delete search;
 //    if (config.SearchParams[CN_SP_ST] == CN_SP_ST_BFS)
@@ -73,7 +74,7 @@ void Mission::createSearch()
 
 void Mission::startSearch()
 {
-
+    std::cout << "      start_search\n";
     sr = search->startSearch(logger, map, options);
 }
 
