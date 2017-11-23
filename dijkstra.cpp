@@ -7,6 +7,12 @@ const int num_of_dir = 8;
 int dx[num_of_dir] = {0,1,1,1,0,-1,-1,-1};
 int dy[num_of_dir] = {1,1,0,-1,-1,-1,0,1};
 
+
+
+//Обратно можно идти по значению веса в вершине = вес ребра + значение смежной вершины
+//для closed(used) nodes использовать хэши
+
+
 // const int num_of_dir = 4;
 //
 // int dx[num_of_dir] = {0,1,0,-1};
@@ -133,9 +139,9 @@ std::string find_path(int start_x, int start_y, int fin_x, int fin_y, std::vecto
 
 int main() {
   std::vector<std::vector<int>> map =
-  { {0, 0, 0, 0, -1},
-    {0, 30, -1, 300, 0},
-    {0, 0, 1000, 300, 0},
+  { {0, 0, 100, -1, -1},
+    {0, 30, 1000, 300, 0},
+    {0, 1, 1000, 300, 0},
     {0, 0, 1500, 300, 0}};
   int n = map.size();
 

@@ -7,6 +7,14 @@ const int num_of_dir = 8;
 int dx[num_of_dir] = {0,1,1,1,0,-1,-1,-1};
 int dy[num_of_dir] = {1,1,0,-1,-1,-1,0,1};
 
+
+
+//Метрика не должна переоценивать реальное расстояние до цели h<= true_path
+
+//Попробовать использовать 2 структуры для open & closed
+
+
+
 // const int num_of_dir = 4;
 //
 // int dx[num_of_dir] = {0,1,0,-1};
@@ -70,7 +78,7 @@ std::string find_path(int start_x, int start_y, int fin_x, int fin_y, std::vecto
   node * n0, * m0;
   bool f;
 
-  std::vector<std::vector<int>> used(n, std::vector<int> (m,0));
+  std::vector<std::vector<int>> used(n, std::vector<int> (m,0));//Реализовать не с уже использованными вершинами, а с выбором еще не использованных вершин и сравнивать их стоимости
   std::vector<std::vector<int>> priority_map(n, std::vector<int> (m,0));
   std::vector<std::vector<int>> dir_map(n, std::vector<int> (m,0));
 
