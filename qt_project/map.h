@@ -43,7 +43,7 @@ class Map
         int getStartj() const;
         int getGoali() const;
         int getGoalj() const;
-
+        int** getGrid() const{return Grid;}
 };
 
 #endif

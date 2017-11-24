@@ -2,7 +2,6 @@
 
 int main(int argc, char* argv[])
 {
-    std::cout << "qwe\n" << std::endl;
     if(argc < 2) {
         std::cout<<"Error! Pathfinding task file (XML) is not specified!"<<std::endl;
         return 0;

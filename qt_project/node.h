@@ -16,11 +16,11 @@ struct Node
 {
     int     i, j; //grid cell coordinates
     double  F, g, H; //f-, g- and h-values of the search node
-    Node    *parent; //backpointer to the predecessor node (e.g. the node which g-value was used to set the g-velue of the current node)
+    Node    *parent = nullptr; //backpointer to the predecessor node (e.g. the node which g-value was used to set the g-velue of the current node)
 
 
-    Node(int i_init, int j_init, double g_init, double H_init) {
-        i=i_init; j=j_init; g=g_init; H=H_init; F=g+H;
+    Node(int i_init, int j_init, double g_init, double H_init, Node *p = nullptr) {
+        i=i_init; j=j_init; g=g_init; H=H_init; F=g+H; parent = p;
     }
     bool operator== (const Node &other) const {
         return i == other.i && j == other.j;
