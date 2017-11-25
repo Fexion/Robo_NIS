@@ -1,6 +1,6 @@
 #ifndef NODE_H
 #define NODE_H
-
+#include <iostream>
 //That's the data structure for storing a single search node.
 //Although one might realize A* pathfinder relying only on g-value,
 //it's a good idea to store f- and h-values explicitly for the sake of simplicity
@@ -25,8 +25,12 @@ struct Node
     bool operator== (const Node &other) const {
         return i == other.i && j == other.j;
     }
+    bool operator!= (const Node &other) const {
+        return i != other.i || j != other.j;
+    }
 
     bool operator< (const Node &other) const {
+
         if (F==other.F) {
             if (breakingties) return g>other.g;
             else return g<other.g;

@@ -12,7 +12,7 @@ Astar::Astar(double HW, bool BT)
 
 double Astar::computeHFromCellToCell(int i1, int j1, int i2, int j2, const EnvironmentOptions &options)
 {
-    int i_dist, j_dist;
+    double i_dist, j_dist;
     double metric_dist = 0;
 
     if (options.metrictype == CN_SP_MT_EUCL) {

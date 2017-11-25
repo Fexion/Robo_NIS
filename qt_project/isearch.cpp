@@ -1,6 +1,8 @@
 #include "isearch.h"
 
 
+
+
 ISearch::ISearch()
 {
     hweight = 1;
@@ -14,7 +16,7 @@ ISearch::~ISearch(void) {}
 
 SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
 {
-    std::cout << hweight<<"     startsearch in func\n";
+    std::cout <<"     startsearch in func\n";
 
     clock_t t;
     t = clock();
@@ -42,21 +44,21 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
     int i, ni, cwi, ccwi;
     int j, nj, cwj, ccwj;
     int rdi, rdj;
-    int g;
+    double g;
     int step = 0;
+
     int start_i, start_j, goal_i, goal_j;
     start_i = map.getStarti(); start_j = map.getStartj();
     goal_i = map.getGoali(), goal_j = map.getGoalj();
+
     Node *n0, *m0, *parent;
     rdi = 0;
     rdj = 0;
 
 
-    n0 = new Node(start_i, start_j, map.getValue(start_i,start_j),
+    n0 = new Node(start_i, start_j, 0,
                   computeHFromCellToCell(start_i,start_j,goal_i, goal_j,options));
     open[pqi].push(*n0);
-
-
 
 
     while(!open[pqi].empty()) {
@@ -70,25 +72,19 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
         j = n0->j;
         g = n0->g;
 
-        bool f=0;
 
-        close.push_back(*n0);
-
+        //close.push_back(*n0);
+        close.insert((std::make_pair(i,j)));
         if (i == goal_i && j == goal_j) {
             t = clock()-t;
             sresult.time = ((float)t)/CLOCKS_PER_SEC;
             parent = n0;
+
             sresult.pathfound = true;
             sresult.nodescreated =  open[pqi].size() + close.size();
             sresult.numberofsteps = step;
-            rdi = parent->i - i;
-            rdj = parent->j - j;
+            sresult.pathlength = g;
             while (parent!=nullptr) {                
-                if (abs(i-parent->i) && abs(j -parent->j)) {
-                    sresult.pathlength += CN_SQRT_TWO;
-                } else if (abs(i-parent->i) || abs(j -parent->j)){
-                    sresult.pathlength++;
-                }
                 if (parent->parent == nullptr) {
                     hppath.push_front(*parent);
                 } else {
@@ -116,7 +112,7 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
             return sresult;
 
         }
-        for (int d = 0; d < num_of_dir; ++d) {
+        for (int d = num_of_dir-1; d>=0;--d){//0; d < num_of_dir; ++d) {
             ni = i + di[d];
             nj = j + dj[d];
 
@@ -139,7 +135,6 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
                                     !options.allowsqueeze) {
                                 continue;
                             }
-
                         }
                     }
                 } else {
@@ -148,6 +143,7 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
             } else {
                 continue;
             }
+
             if (options.allowdiagonal) {
                 m0 = new Node(ni, nj, g+(d%2)*(CN_SQRT_TWO-1)+1,
                             computeHFromCellToCell(ni,nj,goal_i, goal_j,options),
@@ -157,10 +153,16 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
                             computeHFromCellToCell(ni,nj,goal_i, goal_j,options),
                             n0, breakingties);
             }
-            if ((std::find(close.begin(), close.end(), *m0) != close.end() )) {
+//            if ((std::find(close.begin(), close.end(), *m0) != close.end() )) {
+//                delete m0;
+//                continue;
+//            }
+            if (close.count(std::make_pair(m0->i,m0->j))) {
                 delete m0;
                 continue;
             }
+
+
             while (!(open[pqi].top()== *m0) && !open[pqi].empty()) {
                 open[1-pqi].push(open[pqi].top());
                 open[pqi].pop();
@@ -170,7 +172,7 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
                 open[pqi].push(*m0);
                 delete m0;
             }else {
-                if (m0->F < open[pqi].top().F && open[pqi].top()== *m0) {
+                if (m0->g < open[pqi].top().g && open[pqi].top()== *m0) {
                     open[pqi].pop();
                     open[pqi].push(*m0);
                     delete m0;

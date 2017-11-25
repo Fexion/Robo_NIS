@@ -11,6 +11,10 @@
 #include <chrono>
 
 
+#include <set>
+#include <utility>
+
+
 #include <algorithm>
 
 class ISearch
@@ -55,9 +59,10 @@ class ISearch
         std::list<Node>                 lppath, hppath;
         double                          hweight;//weight of h-value
         bool                            breakingties;//flag that sets the priority of nodes in addOpen function when their F-values is equal
-        std::vector<Node>               close;
+        //std::vector<Node>               close;
+        std::set<std::pair<int,int>>        close;
         std::priority_queue<Node>       open[2];
-        char                            pqi = 0;
+        int                            pqi = 0;
         //need to define open, close;
 };
 #endif
