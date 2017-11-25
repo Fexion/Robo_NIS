@@ -97,10 +97,14 @@ void Mission::printSearchResultsToConsole()
 
 void Mission::saveSearchResultsToLog()
 {
+
     logger->writeToLogSummary(sr.numberofsteps, sr.nodescreated, sr.pathlength, sr.time, map.getCellSize());
+
     if (sr.pathfound) {
         logger->writeToLogPath(*sr.lppath);
+        std::cout << "saving1\n";
         logger->writeToLogHPpath(*sr.hppath);
+        std::cout << "saving2\n";
         logger->writeToLogMap(map, *sr.lppath);
     } else
         logger->writeToLogNotFound();

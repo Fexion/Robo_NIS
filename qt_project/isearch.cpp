@@ -1,5 +1,5 @@
 #include "isearch.h"
-#include <string>
+
 
 ISearch::ISearch()
 {
@@ -15,6 +15,10 @@ ISearch::~ISearch(void) {}
 SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const EnvironmentOptions &options)
 {
     std::cout << hweight<<"     startsearch in func\n";
+
+    clock_t t;
+    t = clock();
+
     int num_of_dir;
     if (options.allowdiagonal) {
         num_of_dir = 8;
@@ -37,50 +41,77 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
 
     int i, ni, cwi, ccwi;
     int j, nj, cwj, ccwj;
-    int g, dir;
-    char c;
-    std::string path = "";
+    int rdi, rdj;
+    int g;
+    int step = 0;
     int start_i, start_j, goal_i, goal_j;
     start_i = map.getStarti(); start_j = map.getStartj();
     goal_i = map.getGoali(), goal_j = map.getGoalj();
     Node *n0, *m0, *parent;
+    rdi = 0;
+    rdj = 0;
 
-    int** new_Grid = map.getGrid();
 
-
-    n0 = new Node(start_i, start_j, map.getValue(start_i,start_j), computeHFromCellToCell(start_i,start_j,goal_i, goal_j,options));
+    n0 = new Node(start_i, start_j, map.getValue(start_i,start_j),
+                  computeHFromCellToCell(start_i,start_j,goal_i, goal_j,options));
     open[pqi].push(*n0);
 
 
 
 
     while(!open[pqi].empty()) {
+        ++step;
         n0 = new Node(open[pqi].top().i, open[pqi].top().j,
-                      open[pqi].top().g, open[pqi].top().H, open[pqi].top().parent);
+                      open[pqi].top().g, open[pqi].top().H,
+                      open[pqi].top().parent, breakingties);
         open[pqi].pop();
 
         i = n0->i;
         j = n0->j;
         g = n0->g;
 
-
+        bool f=0;
 
         close.push_back(*n0);
 
         if (i == goal_i && j == goal_j) {
+            t = clock()-t;
+            sresult.time = ((float)t)/CLOCKS_PER_SEC;
             parent = n0;
-            while (parent!=nullptr) {
-                i= parent->i;
-                j= parent->j;
-                parent=parent->parent;
-                new_Grid[i][j]=2;
-            }
-            for (int y = 0; y < map.getMapHeight(); ++y){
-                for (int x = 0; x<map.getMapWidth(); ++x){
-                    std::cout << new_Grid[y][x];
+            sresult.pathfound = true;
+            sresult.nodescreated =  open[pqi].size() + close.size();
+            sresult.numberofsteps = step;
+            rdi = parent->i - i;
+            rdj = parent->j - j;
+            while (parent!=nullptr) {                
+                if (abs(i-parent->i) && abs(j -parent->j)) {
+                    sresult.pathlength += CN_SQRT_TWO;
+                } else if (abs(i-parent->i) || abs(j -parent->j)){
+                    sresult.pathlength++;
                 }
-                std::cout << "\n";
+                if (parent->parent == nullptr) {
+                    hppath.push_front(*parent);
+                } else {
+                    if (!(rdi == (parent->i - i) &&
+                          rdj == (parent->j - j))) {
+                        hppath.push_front(*(n0));
+
+                        rdi = parent->i - i;
+                        rdj = parent->j - j;
+                    }
+                }
+
+                i = parent->i;
+                j = parent->j;
+
+                lppath.push_front(*parent);
+                n0=parent;
+                parent=parent->parent;
+
             }
+            sresult.lppath = &lppath;
+            sresult.hppath = &hppath;
+
             while(!open[pqi].empty()) open[pqi].pop();
             return sresult;
 
@@ -119,18 +150,17 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
             }
             if (options.allowdiagonal) {
                 m0 = new Node(ni, nj, g+(d%2)*(CN_SQRT_TWO-1)+1,
-                            computeHFromCellToCell(ni,nj,goal_i, goal_j,options), n0);
+                            computeHFromCellToCell(ni,nj,goal_i, goal_j,options),
+                            n0, breakingties);
             } else {
                 m0 = new Node(ni, nj, g+1,
-                            computeHFromCellToCell(ni,nj,goal_i, goal_j,options), n0);
+                            computeHFromCellToCell(ni,nj,goal_i, goal_j,options),
+                            n0, breakingties);
             }
-
-
             if ((std::find(close.begin(), close.end(), *m0) != close.end() )) {
                 delete m0;
                 continue;
             }
-
             while (!(open[pqi].top()== *m0) && !open[pqi].empty()) {
                 open[1-pqi].push(open[pqi].top());
                 open[pqi].pop();
@@ -151,6 +181,7 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
             }
 
             if(open[pqi].size() > open[1-pqi].size()) pqi=1-pqi;
+
             while(!open[1 - pqi].empty()) {
                 open[pqi].push(open[1-pqi].top());
                 open[1-pqi].pop();
