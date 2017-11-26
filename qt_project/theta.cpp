@@ -24,8 +24,8 @@ bool Theta::lineOfSight(int i1, int j1, int i2, int j2, const Map &map, bool cut
     }
 
     if (di >= dj) {
-        while (i1!=j2) {
-            f += di;
+        while (i1!=i2) {
+            f += dj;
             if (f>= di) {
                 if (map.CellIsObstacle(i1 + (si - 1)/2, j1 + (sj - 1)/2)) {
                     return false;

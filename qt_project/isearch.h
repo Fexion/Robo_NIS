@@ -26,7 +26,8 @@ class ISearch
 
     protected:
         virtual double computeHFromCellToCell(int i1, int j1, int i2, int j2, const EnvironmentOptions &options){return 0;}
-
+        virtual bool lineOfSight(int i1, int j1, int i2, int j2, const Map &map, bool cutcorners) {return 0;}
+        bool accessibility(int i, int j, int d, const std::vector<int> &di, const std::vector<int> &dj, int num_of_dir, const Map &map, const EnvironmentOptions &options);
         //CODE HERE
         //Try to split class functionality to the methods that can be re-used in successors classes,
         //e.g. classes that realize A*, JPS, Theta* algorithms
