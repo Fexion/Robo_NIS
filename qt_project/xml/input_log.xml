@@ -52,7 +52,7 @@
     </options>
     <log>
         <mapfilename>/home/alex/Desktop/A_star/qt_project/xml/input.xml</mapfilename>
-        <summary numberofsteps="375" nodescreated="416" length="30.556349" length_scaled="733.35237121582031" time="0.005452"/>
+        <summary numberofsteps="375" nodescreated="416" length="30.556349" length_scaled="733.35237121582031" time="0.005556"/>
         <path>
             <row number="0">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>
             <row number="1">0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 </row>

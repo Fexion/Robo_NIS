@@ -32,8 +32,8 @@ struct Node
     bool operator< (const Node &other) const {
 
         if (F==other.F) {
-            if (breakingties) return g>other.g;
-            else return g<other.g;
+            if (breakingties) return g>=other.g;
+            else return g<=other.g;
         }
         return F>other.F;
     }

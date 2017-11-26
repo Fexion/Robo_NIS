@@ -39,8 +39,6 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
         dj = {1,0,-1,0};
     }
 
-
-
     int i, ni, cwi, ccwi;
     int j, nj, cwj, ccwj;
     int rdi, rdj;
@@ -72,9 +70,9 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
         j = n0->j;
         g = n0->g;
 
-
         //close.push_back(*n0);
         close.insert((std::make_pair(i,j)));
+
         if (i == goal_i && j == goal_j) {
             t = clock()-t;
             sresult.time = ((float)t)/CLOCKS_PER_SEC;
@@ -172,7 +170,7 @@ SearchResult ISearch::startSearch(ILogger *Logger, const Map &map, const Environ
                 open[pqi].push(*m0);
                 delete m0;
             }else {
-                if (m0->g < open[pqi].top().g && open[pqi].top()== *m0) {
+                if (m0->g < open[pqi].top().g && open[pqi].top()== *m0) { // changes path a bit
                     open[pqi].pop();
                     open[pqi].push(*m0);
                     delete m0;
